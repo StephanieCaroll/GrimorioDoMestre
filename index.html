@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grimório do Mestre</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=IM+Fell+DW+Pica+SC&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        :root {
+            --cor-fundo: #2a1f18;
+            --cor-pergaminho: #f5e9d8;
+            --cor-texto: #332d28;
+            --cor-destaque: #8b4513;
+            --cor-dourado: #d4af37;
+            --cor-dourado-claro: #e8d49e;
+            --cor-vela: #f8d56b;
+            --sombra-texto: 1px 1px 2px rgba(0, 0, 0, 0.3);
+            --sombra-caixa: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        body {
+            background-color: var(--cor-fundo);
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(139, 69, 19, 0.2) 0%, transparent 25%),
+                radial-gradient(circle at 80% 70%, rgba(212, 175, 55, 0.15) 0%, transparent 25%),
+                url('https://www.transparenttextures.com/patterns/parchment.png');
+            background-size: cover;
+            background-attachment: fixed;
+            color: var(--cor-texto);
+            font-family: 'Merriweather', serif;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            box-shadow: inset 0 0 150px rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            position: relative;
+        }
+
+        /* Efeito de vela */
+        body:before {
+            content: '';
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 100px;
+            height: 150px;
+            background: 
+                radial-gradient(ellipse at center, var(--cor-vela) 0%, rgba(248, 213, 107, 0.5) 70%, transparent 100%),
+                linear-gradient(to bottom, var(--cor-vela) 0%, var(--cor-dourado) 100%);
+            border-radius: 50% 50% 5px 5px;
+            box-shadow: 0 0 50px rgba(248, 213, 107, 0.6);
+            opacity: 0.3;
+            z-index: -1;
+            animation: flicker 5s infinite alternate;
+            filter: blur(1px);
+        }
+
+        @keyframes flicker {
+            0%, 100% { opacity: 0.3; }
+            20%, 80% { opacity: 0.35; }
+            30%, 60% { opacity: 0.25; }
+            40%, 50% { opacity: 0.4; }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+            padding: 20px 0;
+        }
+
+        .header h1 {
+            font-family: 'Cinzel Decorative', serif;
+            color: var(--cor-dourado);
+            font-size: 3.5em;
+            margin: 0;
+            letter-spacing: 4px;
+            text-shadow: 
+                2px 2px 5px rgba(0, 0, 0, 0.8), 
+                0 0 10px rgba(212, 175, 55, 0.7),
+                0 0 20px rgba(212, 175, 55, 0.3);
+            position: relative;
+            z-index: 2;
+            text-transform: uppercase;
+            background: linear-gradient(to right, var(--cor-dourado), var(--cor-dourado-claro));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-fill-color: transparent;
+            padding: 0 20px;
+            display: inline-block;
+        }
+
+        .header h1:before, .header h1:after {
+            content: '❖';
+            color: var(--cor-dourado);
+            font-size: 1.5em;
+            opacity: 0.6;
+            z-index: -1;
+        }
+
+        .header h1:before {
+            left: -20px;
+            transform: translateY(-50%) rotate(-15deg);
+        }
+
+        .header h1:after {
+            right: -20px;
+            transform: translateY(-50%) rotate(15deg);
+        }
+        
+        .container-principal {
+            background: 
+                linear-gradient(rgba(245, 233, 216, 0.9), rgba(245, 233, 216, 0.9)), 
+                url('https://www.transparenttextures.com/patterns/rice-paper.png');
+            background-size: cover;
+            border: 2px solid var(--cor-destaque);
+            border-image: linear-gradient(to right, var(--cor-dourado), var(--cor-destaque)) 30;
+            box-shadow: 
+                var(--sombra-caixa),
+                inset 0 0 50px rgba(139, 69, 19, 0.2);
+            padding: 40px;
+            margin: auto;
+            max-width: 900px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            border-radius: 5px;
+        }
+
+        /* Efeito de borda desgastada */
+        .container-principal:before {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 8px;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        /* Barra de navegação fixa no rodapé */
+        .nav-buttons {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100vw;
+            z-index: 20;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            gap: 0;
+            background: rgba(40, 25, 10, 0.85);
+            backdrop-filter: blur(8px) saturate(1.2);
+            border-top: 3px solid var(--cor-dourado);
+            box-shadow: 0 -4px 30px rgba(212,175,55,0.12), 0 -1px 0 var(--cor-dourado-claro);
+            padding: 0;
+            height: 80px;
+        }
+
+        .nav-btn {
+            background: none;
+            border: none;
+            color: var(--cor-dourado-claro);
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 1.1em;
+            cursor: pointer;
+            padding: 0 32px;
+            height: 80px;
+            position: relative;
+            transition: all 0.25s cubic-bezier(.25,.8,.25,1);
+            letter-spacing: 1px;
+            text-shadow: 0 2px 8px #000, 0 0 8px var(--cor-dourado);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+        }
+
+        .nav-btn:before {
+            content: '';
+            position: absolute;
+            left: 10px;
+            right: 10px;
+            top: 10px;
+            bottom: 10px;
+            border-radius: 18px;
+            background: linear-gradient(120deg, rgba(212,175,55,0.12) 0%, rgba(245,233,216,0.08) 100%);
+            box-shadow: 0 0 18px 2px rgba(212,175,55,0.08);
+            opacity: 0.5;
+            z-index: -1;
+            transition: all 0.3s;
+        }
+
+        .nav-btn:hover:before, .nav-btn.active:before {
+            opacity: 0.9;
+            box-shadow: 0 0 24px 4px var(--cor-dourado);
+            background: linear-gradient(120deg, rgba(212,175,55,0.22) 0%, rgba(245,233,216,0.18) 100%);
+        }
+
+        .nav-btn:hover, .nav-btn.active {
+            color: var(--cor-dourado);
+            text-shadow: 0 0 12px var(--cor-dourado), 0 2px 8px #000;
+            transform: translateY(-6px) scale(1.08);
+        }
+
+        .nav-btn i {
+            margin-right: 10px;
+            font-size: 2.1em;
+            transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+            filter: drop-shadow(0 0 6px var(--cor-dourado));
+        }
+
+        .nav-btn:hover i, .nav-btn.active i {
+            transform: scale(1.25) rotate(-8deg);
+            color: var(--cor-dourado);
+            filter: drop-shadow(0 0 12px var(--cor-dourado));
+        }
+
+        .content-area {
+            text-align: center;
+            flex-grow: 1;
+            position: relative;
+            padding: 20px;
+        }
+
+        h2 {
+            font-family: 'Cinzel', serif;
+            color: var(--cor-destaque);
+            border-bottom: 2px solid var(--cor-dourado);
+            padding-bottom: 15px;
+            margin-top: 0;
+            margin-bottom: 30px;
+            text-shadow: var(--sombra-texto);
+            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            position: relative;
+        }
+
+        h2:before, h2:after {
+            content: '✧';
+            color: var(--cor-dourado);
+            font-size: 0.8em;
+            opacity: 0.7;
+        }
+        
+        .content-area p {
+            font-family: 'Merriweather', serif;
+            line-height: 1.8;
+            text-shadow: var(--sombra-texto);
+            position: relative;
+            z-index: 1;
+        }
+
+        button {
+            background: linear-gradient(to bottom, var(--cor-destaque), #6b2e0a);
+            color: var(--cor-dourado-claro);
+            border: 1px solid var(--cor-dourado);
+            border-radius: 5px;
+            padding: 12px 25px;
+            font-family: 'Merriweather', serif;
+            cursor: pointer;
+            box-shadow: 
+                2px 2px 5px rgba(0, 0, 0, 0.3),
+                inset 0 1px 1px rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        button:before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            background: linear-gradient(45deg, var(--cor-dourado), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        button:hover {
+            background: linear-gradient(to bottom, var(--cor-dourado), #c9a227);
+            color: var(--cor-destaque);
+            transform: translateY(-3px);
+            box-shadow: 
+                4px 4px 10px rgba(0, 0, 0, 0.5),
+                inset 0 1px 1px rgba(255, 255, 255, 0.3);
+            text-shadow: none;
+        }
+
+        button:hover:before {
+            opacity: 0.2;
+        }
+
+        button i {
+            margin-right: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        button:hover i {
+            transform: scale(1.2);
+        }
+
+        /* Efeitos de animação */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .content-area > * {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        /* Responsividade */
+        @media (max-width: 800px) {
+            .header h1 {
+                font-size: 2.2em;
+                padding: 0 10px;
+            }
+            .header h1:before, .header h1:after {
+                font-size: 1em;
+            }
+            .nav-buttons {
+                height: 60px;
+            }
+            .nav-btn {
+                font-size: 0.95em;
+                padding: 0 12px;
+                height: 60px;
+            }
+            .nav-btn i {
+                font-size: 1.5em;
+            }
+            .container-principal {
+                padding: 20px;
+                margin: 10px;
+            }
+            h2 {
+                font-size: 1.5em;
+                margin-bottom: 20px;
+            }
+            #music-btn {
+                width: 50px;
+                height: 50px;
+                font-size: 1.1em;
+                bottom: 85px;
+            }
+        }
+
+        @media (max-width: 500px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+            .nav-buttons {
+                height: 54px;
+            }
+            .nav-btn {
+                font-size: 0.85em;
+                padding: 0 6px;
+                height: 54px;
+            }
+            .nav-btn i {
+                font-size: 1.2em;
+            }
+            #music-btn {
+                width: 44px;
+                height: 44px;
+                font-size: 1em;
+                bottom: 65px;
+            }
+            form {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1><i class="fa-solid fa-book-sparkles"></i> Grimório do Mestre</h1>
+    </div>
+
+    <div class="container-principal">
+        <div class="nav-buttons">
+            <button class="nav-btn active" id="btn-home"><i class="fa-solid fa-book-sparkles"></i> Início</button>
+            <button class="nav-btn" id="btn-dados"><i class="fa-solid fa-dice"></i> Dados</button>
+            <button class="nav-btn" id="btn-nomes"><i class="fa-solid fa-user-ninja"></i> Nomes</button>
+            <button class="nav-btn" id="btn-ficha"><i class="fa-solid fa-address-card"></i> Ficha Rápida</button>
+            <button class="nav-btn" id="btn-missoes"><i class="fa-solid fa-scroll"></i> Missões</button>
+            <button class="nav-btn" id="btn-npc"><i class="fa-solid fa-user-secret"></i> NPC</button>
+            <button class="nav-btn" id="btn-tesouros"><i class="fa-solid fa-gem"></i> Tesouros</button>
+            <button class="nav-btn" id="btn-timer"><i class="fa-solid fa-stopwatch"></i> Timer</button>
+        </div>
+        <div class="content-area" id="content-area"></div>
+    </div>
+
+    <button id="music-btn"><i class="fa-solid fa-music"></i></button>
+
+    <script>
+        // Áudios
+        const backgroundMusic = new Audio('https://ia800806.us.archive.org/24/items/rpg-music-pack-vol.-1/A%20Hero%27s%20Welcome.mp3');
+        const diceRollSound = new Audio('https://ia800806.us.archive.org/24/items/rpg-music-pack-vol.-1/Clash%20of%20Titans.mp3');
+        const pageTurnSound = new Audio('https://ia800806.us.archive.org/24/items/rpg-music-pack-vol.-1/Deeper%20into%20the%20Crypts.mp3');
+        backgroundMusic.loop = true;
+        backgroundMusic.volume = 0.3;
+        diceRollSound.volume = 0.6;
+        pageTurnSound.volume = 0.4;
+
+        const content = document.getElementById('content-area');
+
+        // Funções de renderização SPA
+function renderHome() {
+    content.innerHTML = `<p style="font-size:1.3em; margin-top:40px;">Bem-vindo, Mestre. As páginas deste grimório esperam por sua próxima aventura.</p>`;
+}
+function renderDados() {
+    import('./js/dados.js').then(mod => {
+        mod.renderDados(content);
+        window.rolarDado = mod.rolarDado;
+    });
+}
+function renderNomes() {
+    import('./js/nomes.js').then(mod => {
+        mod.renderNomes(content);
+        window.gerarNome = mod.gerarNome;
+    });
+}
+function renderFicha() {
+    import('./js/ficha.js').then(mod => {
+        mod.renderFicha(content);
+    });
+}
+function renderMissoes() {
+    import('./js/missoes.js').then(mod => {
+        mod.renderMissoes(content);
+        window.gerarMissao = mod.gerarMissao;
+    });
+}
+function renderNPC() {
+    // Implementação direta do NPC usando o código do js/npc.js
+    function gerarNomeAleatorio() {
+        const prefixes = ['Ael', 'Thal', 'El', 'Cor', 'Fin', 'Dra', 'Mor', 'Bran', 'Lor', 'Aro', 'Bal', 'Cal', 'Dae', 'Fae', 'Gala'];
+        const middles = ['da', 'ri', 'len', 'gar', 'on', 'en', 'os', 'in', 'eth', 'lin', 'wyn', 'dor', 'an', 'al'];
+        const suffixes = ['dor', 'ion', 'as', 'nir', 'lor', 'mir', 'gorn', 'dan', 'iel', 'wen', 'ian', 'ael'];
+        const numPartes = Math.floor(Math.random() * 2) + 2;
+        let nome = '';
+        if (numPartes === 3) {
+            nome = prefixes[Math.floor(Math.random() * prefixes.length)] +
+                   middles[Math.floor(Math.random() * middles.length)] +
+                   suffixes[Math.floor(Math.random() * suffixes.length)];
+        } else {
+            nome = prefixes[Math.floor(Math.random() * prefixes.length)] +
+                   suffixes[Math.floor(Math.random() * suffixes.length)];
+        }
+        return nome;
+    }
+    function gerarNPC() {
+        const sobrenomes = ['Mão-de-Ferro', 'Sombra-Fria', 'Folha-Veloz', 'Pedra-Rúnica', 'Coração-Valente', 'Rio-Longo', 'Vento-Sussurrante', 'Chama-Brilhante'];
+        const racasNPC = ['Humano', 'Elfo', 'Anão', 'Orc', 'Gnomo', 'Halfling', 'Tiefling'];
+        const profsNPC = ['Guerreiro', 'Mago', 'Ladino', 'Clérigo', 'Bardo', 'Mercador', 'Nobre', 'Aventureiro'];
+        const personalidadesNPC = ['corajoso', 'misterioso', 'amigável', 'arrogante', 'leal', 'trapaceiro', 'sábio', 'medroso'];
+        const nome = gerarNomeAleatorio();
+        const sobrenome = sobrenomes[Math.floor(Math.random() * sobrenomes.length)];
+        const raca = racasNPC[Math.floor(Math.random() * racasNPC.length)];
+        const prof = profsNPC[Math.floor(Math.random() * profsNPC.length)];
+        const pers = personalidadesNPC[Math.floor(Math.random() * personalidadesNPC.length)];
+        document.getElementById('npc-gerado').innerHTML = `<b>${nome} ${sobrenome}</b><br>Raça: ${raca}<br>Profissão: ${prof}<br>Personalidade: ${pers}`;
+    }
+    content.innerHTML = `
+        <h2><i class='fa-solid fa-user-secret'></i> Gerador de NPC</h2>
+        <button id='btn-gerar-npc' style='margin-bottom:24px;'>Gerar NPC</button>
+        <div id='npc-gerado' style='margin-top:32px;font-size:1.1em;min-height:60px;'></div>
+    `;
+    document.getElementById('btn-gerar-npc').onclick = gerarNPC;
+}
+function renderTesouros() {
+    import('./js/tesouros.js').then(mod => {
+        mod.renderTesouros(content);
+        window.gerarTesouro = mod.gerarTesouro;
+    });
+}
+function renderTimer() {
+    content.innerHTML = `
+        <h2><i class='fa-solid fa-stopwatch'></i> Timer</h2>
+        <div style='margin:32px 0;'>
+            <span id='timer-display' style='font-size:2em;'>00:00:00</span>
+        </div>
+        <div style='margin-bottom:32px;'>
+            <button id='timer-start' style='margin-right:12px;'>Iniciar</button>
+            <button id='timer-pause' style='margin-right:12px;'>Pausar</button>
+            <button id='timer-reset'>Resetar</button>
+        </div>
+    `;
+    let timerInterval;
+    let totalSeconds = 0;
+    let running = false;
+    function updateDisplay() {
+        const hours = String(Math.floor(totalSeconds / 3600)).padStart(2, '0');
+        const min = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, '0');
+        const sec = String(totalSeconds % 60).padStart(2, '0');
+        document.getElementById('timer-display').textContent = `${hours}:${min}:${sec}`;
+    }
+    function startTimer() {
+        if (!running) {
+            running = true;
+            timerInterval = setInterval(() => {
+                totalSeconds++;
+                updateDisplay();
+            }, 1000);
+        }
+    }
+    function pauseTimer() {
+        running = false;
+        clearInterval(timerInterval);
+    }
+    function resetTimer() {
+        pauseTimer();
+        totalSeconds = 0;
+        updateDisplay();
+    }
+    document.getElementById('timer-start').onclick = startTimer;
+    document.getElementById('timer-pause').onclick = pauseTimer;
+    document.getElementById('timer-reset').onclick = resetTimer;
+    updateDisplay();
+}
+
+        // Navegação SPA
+        const navs = [
+            { id: 'btn-home', render: renderHome },
+            { id: 'btn-dados', render: renderDados },
+            { id: 'btn-nomes', render: renderNomes },
+            { id: 'btn-ficha', render: renderFicha },
+            { id: 'btn-missoes', render: renderMissoes },
+            { id: 'btn-npc', render: renderNPC },
+            { id: 'btn-tesouros', render: renderTesouros },
+            { id: 'btn-timer', render: renderTimer }
+        ];
+
+        navs.forEach(nav => {
+            document.getElementById(nav.id).addEventListener('click', () => {
+                pageTurnSound.play();
+                document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+                document.getElementById(nav.id).classList.add('active');
+                nav.render();
+            });
+        });
+
+        // Música de fundo e botão de controle
+        const musicBtn = document.getElementById('music-btn');
+        let isMusicPlaying = false;
+        musicBtn.addEventListener('click', () => {
+            if (isMusicPlaying) {
+                backgroundMusic.pause();
+                musicBtn.innerHTML = '<i class="fa-solid fa-volume-xmark"></i>';
+            } else {
+                backgroundMusic.play();
+                musicBtn.innerHTML = '<i class="fa-solid fa-volume-high"></i>';
+            }
+            isMusicPlaying = !isMusicPlaying;
+        });
+
+        // Renderização inicial
+        renderHome();
+    </script>
+</body>
+</html>
